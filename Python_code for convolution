@@ -1,0 +1,24 @@
+import numpy as np
+image=np.ones([100,100])
+fil=np.array([[2,2,2,2,2],[2,2,2,2,2],[2,2,2,2,2],[2,2,2,2,2],[2,2,2,2,2]])
+def Conv_layer(image,fil1):
+    image_h,image_w=np.shape(image)
+    fil_h,fil_w=np.shape(fil1)
+    h=0
+    l=np.empty((0,1))
+    while(h<=image_h-fil_h):
+        w=0
+        while(w<=image_w-fil_w):
+            dumy=image[h:h+fil_h,w:w+fil_w].flatten()
+            dumy=np.array(dumy.reshape(fil_h*fil_w,1))
+            l=np.append(l,[dumy])
+            w=w+1
+        h=h+1 #this+1 is stride
+    i=np.reshape(l,[(image_h-fil_h+1)*(image_w-fil_w+1),fil_h*fil_w])
+    i=i.T
+    fil_1=fil1.flatten()
+    fil_1=np.reshape(fil_1,[1,fil_h*fil_w])
+    after_conv=np.dot(fil_1,i)
+    after_conv=np.reshape(after_conv,[image_h-fil_h+1,image_h-fil_h+1])
+    return after_conv
+Result=conv_layer(image,fil)
